@@ -93,7 +93,7 @@ ai-camp-enrich-and-pitch/
 
 ## Контакты + обратная связь
 
-Telegram: @dkorobovtsev
+Telegram: [@d_korob](https://t.me/d_korob)
 Email: dkor.aitest@gmail.com
 
 Если что-то не работает, что-то получилось не так как описано, или хочешь поделиться кейсом из своего бизнеса — пиши.
