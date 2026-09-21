@@ -250,7 +250,7 @@ End-to-end пайплайн для персонализированного outb
 3. **WebSearch** `"<name>" site:forbes.kz OR site:kursiv.kz OR site:kapital.kz OR site:inbusiness.kz` → KZ business медиа
 4. **WebSearch** `"<name>" site:linkedin.com/in/` → LinkedIn snippets из Google
 5. **WebSearch** `"<name>" telegram канал OR t.me/` → проверь наличие TG-канала
-   - **Если канал найден** → вызови **telegram-channel-parser** на канал → последние 20 постов
+   - **Если канал найден** → последние 20 постов. Если установлен скилл **telegram-channel-parser** - вызови его. Если нет - открой веб-превью канала `https://t.me/s/<channel>` через WebFetch и извлеки посты (дата, текст, ссылка на пост); для постов старше первой страницы - `https://t.me/s/<channel>?before=<id самого раннего поста>`
 6. **WebSearch** `"<name>" награды OR премии` → recognition signals
 7. **(Опционально, paid)** Если `$APIFY_API_KEY`: full LinkedIn profile + last 20 posts через Apify
 
@@ -504,7 +504,8 @@ formation moment коммерческой функции после Контур
 
 4. **Определи путь файла**:
    ```bash
-   COMPANY_SLUG=$(echo "<COMPANY_NAME>" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
+   # Транслитерация: кириллица и казахские буквы → латиница, иначе имя файла выйдет пустым
+   COMPANY_SLUG=$(python3 -c 'import re,sys; tr=dict(zip("абвгдеёзийклмнопрстуфхыэәғқңөұүһі","abvgdeezijklmnoprstufhyeagknouuhi")); tr.update({"ж":"zh","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ю":"yu","я":"ya","ъ":"","ь":""}); s="".join(tr.get(c,c) for c in sys.argv[1].lower()); print(re.sub(r"[^a-z0-9]+","-",s).strip("-") or "company")' "<COMPANY_NAME>")
    TIMESTAMP=$(date +%Y%m%d-%H%M)
    REPORT_PATH="reports/${COMPANY_SLUG}-${TIMESTAMP}.html"
    ```

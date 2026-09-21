@@ -42,3 +42,7 @@ active/
 # Workshop screenshots / source images kept locally (not for git)
 outbound.png
 *.local.png
+
+# Local workshop video recordings (large, not for git)
+video- demo/
+*.mp4
