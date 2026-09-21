@@ -710,14 +710,19 @@ formation moment коммерческой функции после Контур
 
 2. Найди LinkedIn URL primary ЛПР (из Stage 3 — если был snippet, или WebSearch заново)
 
-3. Вызови Apify LinkedIn Profile Scraper:
+3. Вызови Apify: профиль и посты ЛПР (`<lpr-handle>` - часть URL после `/in/`):
    ```bash
-   curl -X POST "https://api.apify.com/v2/acts/dev_fusion~linkedin-profile-scraper/run-sync-get-dataset-items?token=$APIFY_API_KEY" \
+   curl -X POST "https://api.apify.com/v2/acts/apimaestro~linkedin-profile-detail/run-sync-get-dataset-items?token=$APIFY_API_KEY" \
      -H "Content-Type: application/json" \
-     -d '{"profileUrls": ["https://www.linkedin.com/in/<lpr-handle>"]}'
+     -d '{"username": "<lpr-handle>"}'
+
+   curl -X POST "https://api.apify.com/v2/acts/apimaestro~linkedin-profile-posts/run-sync-get-dataset-items?token=$APIFY_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"username": "<lpr-handle>", "page_number": 1}'
    ```
 
-   Альтернативный actor если первый не работает: `bebity/linkedin-premium-actor`, `curious_coder/linkedin-profile-scraper`.
+   НЕ используй `dev_fusion/linkedin-profile-scraper` и `curious_coder/linkedin-profile-scraper`: на нашем ключе они падают с `full-permission-actor-not-approved`.
+   Для Шага 4 (соцсети) рабочие акторы: `apify/instagram-profile-scraper` (вход `{"usernames":["a","b"]}`, резолвит хэндл; пробуй варианты с точкой и подчёркиванием) и `apify/instagram-scraper` (вход `{"directUrls":["https://www.instagram.com/<handle>/"],"resultsType":"posts","resultsLimit":10}`).
 
 4. Из ответа извлеки:
    - Recent posts (последние 10)
